@@ -1,12 +1,12 @@
 package models
 
 import (
-	_ "../utils/uuid"
+	"github.com/jinzhu/gorm"
 )
 
 type Workplace struct {
-	ID          int    `gorm:"primary_key"`
-	Name        string `sql:"size:300"`
-	Uuid        string
-	FrontolCode int
+	gorm.Model
+	Name        string `sql:"type:varchar(255)";"not null";`
+	Uuid        string `sql:"type=uuid;index:idx_uuid";"not null;unique"`
+	FrontolCode int    `sql:"index:idx_frontol_code";"not null"`
 }

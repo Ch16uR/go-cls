@@ -4,6 +4,7 @@ import (
 	. "../db"
 	. "../models"
 	"../utils/jwt"
+	"../utils/uuid"
 	"fmt"
 
 	"github.com/martini-contrib/render"
@@ -46,8 +47,8 @@ func WorkplacePing(r render.Render, json Test) {
 
 //add new workplace
 type Add struct {
-	Name        string
-	FrontolCode int
+	Name        string `"json:name"`
+	FrontolCode int    `json:"frontol_code"`
 }
 
 func WorkplaceAdd(r render.Render, json Add) {
@@ -55,7 +56,9 @@ func WorkplaceAdd(r render.Render, json Add) {
 	workplace := Workplace{}
 	workplace.Name = json.Name
 	workplace.FrontolCode = json.FrontolCode
+	workplace.Uuid = uuid.CreateUuid()
 
 	DB.Create(&workplace)
 
+	r.JSON(200, map[string]interface{}{"message": "your uuid is"})
 }

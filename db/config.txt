@@ -1,6 +1,6 @@
 {
-	"DbType" : "postgres",
-	"DbHost" : "192.168.0.101",	
+	"DbType" : "mysql",
+	"DbHost" : "192.168.3.112",	
 	"DbName"  : "js_lo",
 	"DbLogin" : "js_lo",
 	"DbPass"  : "bsgjjzp"

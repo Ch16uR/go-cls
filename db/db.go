@@ -1,6 +1,7 @@
 package db
 
 import (
+	. "../models"
 	"encoding/json"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
@@ -22,14 +23,24 @@ var DB gorm.DB
 func init() {
 
 	var err error
+	var dbString string
+
 	dbConfig := openConfig()
-	DB, err = gorm.Open(dbConfig.DbType, dbConfig.DbType+"://"+dbConfig.DbLogin+":"+dbConfig.DbPass+"@"+dbConfig.DbHost+"/"+dbConfig.DbName+"?sslmode=disable")
+	if dbConfig.DbType == "mysql" {
+		dbString = dbConfig.DbName + ":" + dbConfig.DbPass + "@tcp(" + dbConfig.DbHost + ":3306)/" + dbConfig.DbName + "?charset=utf8&parseTime=True"
+	} else if dbConfig.DbType == "postgres" {
+		dbString = dbConfig.DbType + "://" + dbConfig.DbLogin + ":" + dbConfig.DbPass + "@" + dbConfig.DbHost + "/" + dbConfig.DbName + "?sslmode=disable"
+	} else {
+		panic("Не удается определить SQL драйвер " + dbConfig.DbType)
+	}
+	DB, err = gorm.Open(dbConfig.DbType, dbString)
 	if err != nil {
 		panic(err)
 	} else {
 		fmt.Println("Соединение с базой данных установленно!\n")
 	}
 	DB.DB()
+	DB.AutoMigrate(&Workplace{}, &Promocode{})
 
 }
 
