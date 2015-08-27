@@ -8,12 +8,12 @@ import (
 )
 
 func apiv1() {
-
-	m.Group("/workplaces", func(router martini.Router) {
+	url := "/api/v1"
+	m.Group(url+"/workplace", func(router martini.Router) {
 
 		router.Post("/auth", binding.Json(controllers.Auth{}), controllers.WorkplaceAuth)
 		router.Post("/test", binding.Json(controllers.Test{}), controllers.WorkplacePing)
-		//add
+		router.Post("/add", binding.Json(controllers.Add{}), controllers.WorkplaceAdd)
 		//update
 		//delete
 		//import

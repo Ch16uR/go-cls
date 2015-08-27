@@ -1,0 +1,8 @@
+{
+	"DbType" : "postgres",
+	"DbHost" : "192.168.0.101",	
+	"DbName"  : "js_lo",
+	"DbLogin" : "js_lo",
+	"DbPass"  : "bsgjjzp"
+}
+

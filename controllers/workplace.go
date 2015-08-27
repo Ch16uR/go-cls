@@ -43,3 +43,19 @@ func WorkplacePing(r render.Render, json Test) {
 		r.JSON(200, map[string]interface{}{"error": err})
 	}
 }
+
+//add new workplace
+type Add struct {
+	Name        string
+	FrontolCode int
+}
+
+func WorkplaceAdd(r render.Render, json Add) {
+	fmt.Printf("%+v\n", json)
+	workplace := Workplace{}
+	workplace.Name = json.Name
+	workplace.FrontolCode = json.FrontolCode
+
+	DB.Create(&workplace)
+
+}
