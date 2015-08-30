@@ -1,11 +1,11 @@
 package main
 
 import (
-	"runtime"
+	_ "runtime"
 )
 
 func init() {
-	runtime.GOMAXPROCS(runtime.NumCPU())
+	//runtime.GOMAXPROCS(runtime.NumCPU())
 }
 
 func main() {

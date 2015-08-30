@@ -26,6 +26,8 @@ func init() {
 	var dbString string
 
 	dbConfig := openConfig()
+
+	// Определение типа СУБД
 	if dbConfig.DbType == "mysql" {
 		dbString = dbConfig.DbName + ":" + dbConfig.DbPass + "@tcp(" + dbConfig.DbHost + ":3306)/" + dbConfig.DbName + "?charset=utf8&parseTime=True"
 	} else if dbConfig.DbType == "postgres" {
@@ -33,6 +35,7 @@ func init() {
 	} else {
 		panic("Не удается определить SQL драйвер " + dbConfig.DbType)
 	}
+
 	DB, err = gorm.Open(dbConfig.DbType, dbString)
 	if err != nil {
 		panic(err)
@@ -40,7 +43,12 @@ func init() {
 		fmt.Println("Соединение с базой данных установленно!\n")
 	}
 	DB.DB()
-	DB.AutoMigrate(&Workplace{}, &Promocode{})
+	if dbConfig.DbType == "mysql" {
+		DB.Set("gorm:table_options", "ENGINE=InnoDB COLLATE=utf8_general_ci")
+
+	}
+
+	DB.Set("gorm:table_options", "ENGINE=InnoDB COLLATE=utf8_general_ci").AutoMigrate(&Workplace{}, &Promocode{}, &DiscountType{}, &Discount{})
 
 }
 

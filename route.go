@@ -20,4 +20,13 @@ func apiv1() {
 
 	}, render.Renderer())
 
+	m.Group(url+"/promocode", func(router martini.Router) {
+
+		//router.Post("/auth", binding.Json(controllers.Calc{}), controllers.PromocodeCalc)
+		//update
+		//delete
+		//import
+
+	}, render.Renderer())
+
 }
