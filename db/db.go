@@ -48,7 +48,7 @@ func init() {
 
 	}
 
-	DB.Set("gorm:table_options", "ENGINE=InnoDB COLLATE=utf8_general_ci").AutoMigrate(&Workplace{}, &Promocode{}, &DiscountType{}, &Discount{})
+	DB.Set("gorm:table_options", "ENGINE=InnoDB COLLATE=utf8_general_ci").AutoMigrate(&Workplace{}, &Promocode{}, &PromocodeDiscountType{}, &Company{}, &Document{}, &Card{}, &Discount{})
 
 }
 

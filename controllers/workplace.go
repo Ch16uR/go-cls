@@ -6,27 +6,31 @@ import (
 	"../utils/jwt"
 	"../utils/uuid"
 	"fmt"
-
 	"github.com/martini-contrib/render"
+	"time"
 )
 
 //Autentificate
-type Auth struct {
+type InputWorkplaceAuth struct {
 	FrontolCode int    `json:"frontol_code"`
 	Uuid        string `json:"uuid"`
 }
 
-func WorkplaceAuth(r render.Render, json Auth) {
+func WorkplaceAuth(r render.Render, json InputWorkplaceAuth) {
 	fmt.Printf("%+v\n", json)
+	if len(json.Uuid) == 0 {
+		r.JSON(200, map[string]interface{}{"status": "error", "message": "Invalid JSON"})
+		return
+	}
 
 	workplace := Workplace{}
 
 	DB.Where("uuid = ?", json.Uuid).First(&workplace)
 	fmt.Printf("%+v\n", workplace)
 	if json.FrontolCode == workplace.FrontolCode && json.Uuid == workplace.Uuid {
-		r.JSON(200, map[string]interface{}{"token": jwt.CreateToken(workplace.Uuid)})
+		r.JSON(200, map[string]interface{}{"status": "ok", "token": jwt.CreateToken(workplace.ID, workplace.CompanyID), "lifetime": time.Now().Add(time.Hour * 24).Unix()})
 	} else {
-		r.JSON(200, map[string]interface{}{"error": "invalid ID or pincode"})
+		r.JSON(200, map[string]interface{}{"status": "error", "message": "Invalid UUID"})
 	}
 }
 
@@ -35,7 +39,7 @@ type Test struct {
 	Token string `"json:token"`
 }
 
-func WorkplacePing(r render.Render, json Test) {
+/*func WorkplacePing(r render.Render, json Test) {
 	fmt.Printf("%+v\n", json)
 	uuid, err := jwt.ParseToken(json.Token)
 	if err == nil {
@@ -43,7 +47,7 @@ func WorkplacePing(r render.Render, json Test) {
 	} else {
 		r.JSON(200, map[string]interface{}{"error": err})
 	}
-}
+}*/
 
 //add new workplace
 type Add struct {

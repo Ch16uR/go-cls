@@ -6,5 +6,11 @@ import (
 
 type Discount struct {
 	gorm.Model
-	Value int `sql:"not null"`
+	DocumentID int `sql:index`
+	Code       int
+	Kind       int
+	Summ       float64
+	Text       string
+	Type       int
+	Value      float64
 }
